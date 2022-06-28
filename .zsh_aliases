@@ -3,8 +3,20 @@ alias gti='git'
 alias less='less -R'
 alias diff='colordiff'
 alias dc='cd'
-alias nethack-online='ssh nethack@nethack.alt.org ; clear'
-alias tron-online='ssh sshtron.zachlatta.com ; clear'
-alias glog='git log --oneline --graph --color --all --decorate'
-alias gitsc='' #todo squash commits
 alias dd='dd status=progress'
+
+# ssh quick connects
+alias sulu='ssh henning@sulu.node.unbk.me ; clear'
+alias beta='ssh henning@beta.node.unbk.me ; clear'
+alias urogo='ssh henning@beta.node.unbk.me; clear'
+
+alias glog='git log --oneline --graph --color --all --decorate'
+# squash commits to merge base "develop" or parameter
+function gitsc() {
+        if [ -n "$1" ]
+        then
+                git reset $(git merge-base "$1" $(git branch --show-current))
+        else
+                git reset $(git merge-base develop $(git branch --show-current))
+        fi
+}
