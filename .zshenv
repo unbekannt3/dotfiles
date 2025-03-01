@@ -1,5 +1,5 @@
 function run() {
-    neofetch
+    fastfetch
 }
 
 OUTPUT=1
