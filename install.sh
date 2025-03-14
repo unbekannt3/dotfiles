@@ -6,8 +6,8 @@ echo "Installing dot files and needed packages..."
 DNF_CMD=$(which dnf)
 APT_CMD=$(which apt-get)
 
-FEDORA_PKGS="zsh git curl wget htop iftop iotop screen nano tmux bpytop neofetch util-linux-user"
-DEB_PKGS="zsh git curl wget htop iftop iotop screen nano tmux bpytop neofetch passwd"
+FEDORA_PKGS="zsh git curl wget htop iftop iotop screen nano tmux btop fastfetch util-linux-user stow"
+DEB_PKGS="zsh git curl wget htop iftop iotop screen nano tmux btop neofetch passwd stow"
 
 # install basic packages
 if [[ ! -z $DNF_CMD ]]; then
