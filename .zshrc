@@ -152,4 +152,4 @@ esac
 # Created by `pipx` on 2025-02-20 22:26:55
 export PATH="$PATH:/home/henning/.local/bin"
 
-export SSH_AUTH_SOCK="~/.var/app/com.quexten.Goldwarden/data/ssh-auth-sock"
+export SSH_AUTH_SOCK=/home/henning/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock
