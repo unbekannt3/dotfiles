@@ -4,7 +4,7 @@
 
 ```
 cd ~
-git clone https://gitlab.com/unbekannt3/dotfiles.git
+git clone https://git.unbk.net/henning/dotfiles.git
 
 cd dotfiles
 ```
