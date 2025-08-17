@@ -6,11 +6,12 @@ alias dc='cd'
 alias dd='dd status=progress'
 
 # ssh quick connects
-alias sulu='ssh henning@sulu.node.unbk.me'
-alias beta='ssh henning@beta.node.unbk.me'
-alias urogo='ssh henning@beta.node.unbk.me'
+alias sulu='ssh sulu.node.unbk.me'
+alias owen='ssh owen.node.unbk.me'
+alias pafo='ssh pafo.node.unbk.me'
 
 alias glog='git log --oneline --graph --color --all --decorate'
+
 # squash commits to merge base "develop" or parameter
 function gitsc() {
         if [ -n "$1" ]
@@ -21,8 +22,3 @@ function gitsc() {
         fi
 }
 
-alias goldwarden='flatpak run --command=goldwarden com.quexten.Goldwarden'
-
-function bw-add-key() {
-  flatpak run --command=goldwarden com.quexten.Goldwarden ssh add --name "$1"
-}
