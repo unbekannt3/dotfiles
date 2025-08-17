@@ -88,6 +88,7 @@ source $ZSH/oh-my-zsh.sh
 # You may need to manually set your language environment
 export LANG=de_DE.UTF-8
 export PATH=/usr/bin:$PATH
+export TERM=xterm-256color
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -147,9 +148,14 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-# pnpm end
 
-# Created by `pipx` on 2025-02-20 22:26:55
+# pipx
 export PATH="$PATH:/home/henning/.local/bin"
 
+# bitwarden ssh agent
 export SSH_AUTH_SOCK=/home/henning/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock
+
+# atuin
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"

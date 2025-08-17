@@ -55,8 +55,8 @@ print_info "Created backup directory: $BACKUP_DIR"
 
 # Define packages for different distributions
 FEDORA_PKGS="zsh git curl wget htop iftop iotop screen nano tmux btop fastfetch util-linux-user stow"
-DEB_PKGS="zsh git curl wget htop iftop iotop screen nano tmux btop neofetch passwd stow"
-ARCH_PKGS="zsh git curl wget htop iftop iotop screen nano tmux btop neofetch util-linux stow"
+DEB_PKGS="zsh git curl wget htop iftop iotop screen nano tmux btop fastfetch passwd stow"
+ARCH_PKGS="zsh git curl wget htop iftop iotop screen nano tmux btop fastfetch util-linux stow"
 # Common packages across distributions for manual installation
 REQUIRED_PKGS="zsh git curl wget nano stow"
 
