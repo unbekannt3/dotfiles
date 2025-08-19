@@ -21,9 +21,9 @@ print_error() {
 print_info "Starting dotfiles installation..."
 
 confirm() {
-    read -p "$1 [y/N] " response
-    case "$response" in
-        [yY][eE][sS]|[yY])
+    read -r -p "$1 [Y/n] " response
+    case "${response:-y}" in
+        [yYjJ]*)
             return 0
             ;;
         *)
