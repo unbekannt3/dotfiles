@@ -243,6 +243,19 @@ else
     fi
 fi
 
+# Install Atuin
+print_info "Installing Atuin..."
+if command -v atuin &>/dev/null; then
+    print_warning "Atuin is already installed"
+    if confirm "Would you like to update Atuin?"; then
+        print_info "Updating Atuin..."
+        curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh || print_error "Failed to update Atuin"
+    fi
+else
+    print_info "Installing Atuin..."
+    curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh || print_error "Failed to install Atuin"
+fi
+
 # Install MesloLGS NF Font
 print_info "Setting up MesloLGS NF font..."
 font_dir="$HOME/.local/share/fonts"
@@ -326,6 +339,12 @@ if [ -d "$P10K_DIR" ]; then
     print_info "✓ powerlevel10k theme is installed"
 else
     print_warning "✗ powerlevel10k theme is not installed"
+fi
+
+if command -v atuin &>/dev/null; then
+    print_info "✓ Atuin is installed"
+else
+    print_warning "✗ Atuin is not installed"
 fi
 
 print_info "------------------------------------------"
