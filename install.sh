@@ -18,6 +18,13 @@ print_error() {
     echo -e "${RED}ERROR:${RESET} $1"
 }
 
+# --- NEU: Check for skip argument ---
+SKIP_PACKAGES=false
+if [[ "$1" == "--skip-packages" ]] || [[ "$1" == "-s" ]]; then
+    SKIP_PACKAGES=true
+fi
+# ------------------------------------
+
 print_info "Starting dotfiles installation..."
 
 confirm() {
@@ -60,97 +67,103 @@ ARCH_PKGS="zsh git curl wget htop iftop iotop screen nano tmux btop fastfetch ut
 # Common packages across distributions for manual installation
 REQUIRED_PKGS="zsh git curl wget nano stow"
 
-# Determine user's system
-DNF_CMD=$(which dnf 2>/dev/null)
-APT_CMD=$(which apt-get 2>/dev/null)
-YUM_CMD=$(which yum 2>/dev/null)
-PACMAN_CMD=$(which pacman 2>/dev/null)
-ZYPPER_CMD=$(which zypper 2>/dev/null)
-
-# Install basic packages
-if [[ ! -z $DNF_CMD ]]; then
-    print_info "Detected Fedora/RHEL-based system, installing packages..."
-    if check_sudo; then
-        sudo dnf install -y $FEDORA_PKGS || {
-            print_error "Failed to install packages with dnf"
-            if confirm "Continue without all packages?"; then
-                print_warning "Continuing without complete package installation"
-            else
-                print_info "Exiting installation..."
-                exit 1
-            fi
-        }
-    fi
-elif [[ ! -z $APT_CMD ]]; then
-    print_info "Detected Debian-based system, installing packages..."
-    if check_sudo; then
-        sudo apt-get update && sudo apt-get install -y $DEB_PKGS || {
-            print_error "Failed to install packages with apt"
-            if confirm "Continue without all packages?"; then
-                print_warning "Continuing without complete package installation"
-            else
-                print_info "Exiting installation..."
-                exit 1
-            fi
-        }
-    fi
-elif [[ ! -z $YUM_CMD ]]; then
-    print_info "Detected older RHEL-based system, installing packages..."
-    if check_sudo; then
-        sudo yum install -y $FEDORA_PKGS || {
-            print_error "Failed to install packages with yum"
-            if confirm "Continue without all packages?"; then
-                print_warning "Continuing without complete package installation"
-            else
-                print_info "Exiting installation..."
-                exit 1
-            fi
-        }
-    fi
-elif [[ ! -z $PACMAN_CMD ]]; then
-    print_info "Detected Arch-based system, installing packages..."
-    if check_sudo; then
-        sudo pacman -Syu --noconfirm $ARCH_PKGS || {
-            print_error "Failed to install packages with pacman"
-            if confirm "Continue without all packages?"; then
-                print_warning "Continuing without complete package installation"
-            else
-                print_info "Exiting installation..."
-                exit 1
-            fi
-        }
-    fi
-elif [[ ! -z $ZYPPER_CMD ]]; then
-    print_info "Detected openSUSE/SUSE-based system, installing packages..."
-    if check_sudo; then
-        sudo zypper install -y $FEDORA_PKGS || {
-            print_error "Failed to install packages with zypper"
-            if confirm "Continue without all packages?"; then
-                print_warning "Continuing without complete package installation"
-            else
-                print_info "Exiting installation..."
-                exit 1
-            fi
-        }
-    fi
+# --- PACKAGE INSTALLATION SECTION ---
+if [ "$SKIP_PACKAGES" = true ]; then
+    print_info "Skipping package installation as requested via parameter."
 else
-    print_warning "Unsupported package manager detected"
-    print_info "The following packages are needed:"
-    echo "---------------------------------------------"
-    echo "$REQUIRED_PKGS"
-    echo "---------------------------------------------"
-    print_info "Additional useful packages if available:"
-    echo "---------------------------------------------"
-    echo "htop iftop iotop screen tmux btop fastfetch/neofetch"
-    echo "---------------------------------------------"
+    # Determine user's system
+    DNF_CMD=$(which dnf 2>/dev/null)
+    APT_CMD=$(which apt-get 2>/dev/null)
+    YUM_CMD=$(which yum 2>/dev/null)
+    PACMAN_CMD=$(which pacman 2>/dev/null)
+    ZYPPER_CMD=$(which zypper 2>/dev/null)
 
-    if confirm "Continue without package installation?"; then
-        print_warning "Continuing without package installation"
+    # Install basic packages
+    if [[ ! -z $DNF_CMD ]]; then
+        print_info "Detected Fedora/RHEL-based system, installing packages..."
+        if check_sudo; then
+            sudo dnf install -y $FEDORA_PKGS || {
+                print_error "Failed to install packages with dnf"
+                if confirm "Continue without all packages?"; then
+                    print_warning "Continuing without complete package installation"
+                else
+                    print_info "Exiting installation..."
+                    exit 1
+                fi
+            }
+        fi
+    elif [[ ! -z $APT_CMD ]]; then
+        print_info "Detected Debian-based system, installing packages..."
+        if check_sudo; then
+            sudo apt-get update && sudo apt-get install -y $DEB_PKGS || {
+                print_error "Failed to install packages with apt"
+                if confirm "Continue without all packages?"; then
+                    print_warning "Continuing without complete package installation"
+                else
+                    print_info "Exiting installation..."
+                    exit 1
+                fi
+            }
+        fi
+    elif [[ ! -z $YUM_CMD ]]; then
+        print_info "Detected older RHEL-based system, installing packages..."
+        if check_sudo; then
+            sudo yum install -y $FEDORA_PKGS || {
+                print_error "Failed to install packages with yum"
+                if confirm "Continue without all packages?"; then
+                    print_warning "Continuing without complete package installation"
+                else
+                    print_info "Exiting installation..."
+                    exit 1
+                fi
+            }
+        fi
+    elif [[ ! -z $PACMAN_CMD ]]; then
+        print_info "Detected Arch-based system, installing packages..."
+        if check_sudo; then
+            sudo pacman -Syu --noconfirm $ARCH_PKGS || {
+                print_error "Failed to install packages with pacman"
+                if confirm "Continue without all packages?"; then
+                    print_warning "Continuing without complete package installation"
+                else
+                    print_info "Exiting installation..."
+                    exit 1
+                fi
+            }
+        fi
+    elif [[ ! -z $ZYPPER_CMD ]]; then
+        print_info "Detected openSUSE/SUSE-based system, installing packages..."
+        if check_sudo; then
+            sudo zypper install -y $FEDORA_PKGS || {
+                print_error "Failed to install packages with zypper"
+                if confirm "Continue without all packages?"; then
+                    print_warning "Continuing without complete package installation"
+                else
+                    print_info "Exiting installation..."
+                    exit 1
+                fi
+            }
+        fi
     else
-        print_info "Exiting installation..."
-        exit 1
+        print_warning "Unsupported package manager detected"
+        print_info "The following packages are needed:"
+        echo "---------------------------------------------"
+        echo "$REQUIRED_PKGS"
+        echo "---------------------------------------------"
+        print_info "Additional useful packages if available:"
+        echo "---------------------------------------------"
+        echo "htop iftop iotop screen tmux btop fastfetch/neofetch"
+        echo "---------------------------------------------"
+
+        if confirm "Continue without package installation?"; then
+            print_warning "Continuing without package installation"
+        else
+            print_info "Exiting installation..."
+            exit 1
+        fi
     fi
 fi
+# ------------------------------------
 
 # Check if oh-my-zsh is already installed
 if [ -d "$HOME/.oh-my-zsh" ]; then
@@ -319,7 +332,6 @@ else
     fi
 fi
 
-# Final notes and reminders
 print_info "------------------------------------------"
 print_info "Installation summary:"
 print_info "------------------------------------------"
